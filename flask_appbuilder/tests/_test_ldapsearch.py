@@ -61,6 +61,8 @@ class LDAPSearchTestCase(unittest.TestCase):
         self.app.config["AUTH_LDAP_USE_TLS"] = False
         self.app.config["AUTH_LDAP_SERVER"] = "ldap://localhost/"
         self.app.config["AUTH_LDAP_SEARCH"] = "ou=example,o=test"
+        self.app.config["AUTH_LDAP_BIND_USER"] = "cn=manager,ou=example,o=test"
+        self.app.config["AUTH_LDAP_BIND_PASSWORD"] = "ldaptest"
         self.app.config["AUTH_LDAP_APPEND_DOMAIN"] = False
         self.app.config["AUTH_LDAP_FIRSTNAME_FIELD"] = None
         self.app.config["AUTH_LDAP_LASTNAME_FIELD"] = None
@@ -77,7 +79,6 @@ class LDAPSearchTestCase(unittest.TestCase):
 
     def test_ldapsearch(self):
         con = ldap.initialize("ldap://localhost/")
-        con.simple_bind_s("cn=manager,ou=example,o=test", "ldaptest")
 
         self.app.config["AUTH_LDAP_SEARCH_FILTER"] = ""
         self.appbuilder = AppBuilder(self.app, self.db.session)
@@ -103,7 +104,6 @@ class LDAPSearchTestCase(unittest.TestCase):
 
     def test_ldapsearchfilter(self):
         con = ldap.initialize("ldap://localhost/")
-        con.simple_bind_s("cn=manager,ou=example,o=test", "ldaptest")
 
         self.app.config[
             "AUTH_LDAP_SEARCH_FILTER"
